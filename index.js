@@ -1,6 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const user = require('./routes/user');
+const config = require('config');
+
+if(!config.get('jwtPrivateKey')) {
+  console.log('FATAL ERROR: jwtPrivateKey is not provided!!!')
+  process.exit(1);
+}
 
 mongoose.connect('mongodb://localhost/practice-app')
   .then(() => console.log('Mongodb connection is successful'))
