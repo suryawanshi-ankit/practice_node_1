@@ -23,7 +23,8 @@ const customersShema = mongoose.Schema({
   phoneNumber: {
     type: Number,
     required: true,
-    length: 10
+    length: 10,
+    unique: true,
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
@@ -38,11 +39,11 @@ const customerValidation = (customer) => {
     firstName: Joi.string().min(5).max(250).required(),
     lastName: Joi.string().min(5).max(250).required(),
     email: Joi.string().min(5).max(250).required(),
-    phoneNumber: Joi.number().length(10).required(),
-    createdBy: Joi.string().ObjectId().required(),
+    phoneNumber: Joi.number().required(),
+    createdBy: Joi.string(),
   }
   return Joi.validate(customer, schema);
 }
 
-module.Customer = Customer;
-module.customerValidation = customerValidation;
+exports.Customer = Customer;
+exports.customerValidation = customerValidation;
