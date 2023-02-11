@@ -3,13 +3,14 @@ const express = require('express');
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const router = express.Router();
+const asyncTryCatchMiddleware = require('../middleware/errror');
 
-router.get('/', async (req, res) => {
+router.get('/', asyncTryCatchMiddleware(async (req, res) => {
   const users = await User.find()
   res.status(200).send(users);
-})
+}));
 
-router.post('/', async (req, res) => {
+router.post('/', asyncTryCatchMiddleware(async (req, res) => {
   const {error } = userValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -24,6 +25,6 @@ router.post('/', async (req, res) => {
 
   const token = user.generateAuthToken();
   res.header('x-auth-token', token).status(200).send(_.pick(user, ['name', 'email']));
-})
+}));
 
 module.exports = router;
